@@ -38,16 +38,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
-    'rest_framework'
+    'authorization',
+    'rest_framework',
+    'knox'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
 
-    'DEFAULT_PERMISSION_CLASSES':[
+    'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+    ),
 }
 
 MIDDLEWARE = [

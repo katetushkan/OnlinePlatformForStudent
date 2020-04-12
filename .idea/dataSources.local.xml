@@ -10,7 +10,7 @@
       <schema-mapping>
         <introspection-scope>
           <node kind="database" qname="onlineplatform">
-            <node kind="schema" qname="public" />
+            <node kind="schema" negative="1" />
           </node>
         </introspection-scope>
       </schema-mapping>
