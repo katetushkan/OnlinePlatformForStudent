@@ -17,9 +17,11 @@ const Courses = (props) => {
             dataSource={props.data}
             renderItem={item => (
               <List.Item>
-                <Card title={item.name}>
-                    {item.date}
-                </Card>
+                  <a href={`${item.id}`}>
+                      <Card title={item.name}>
+                        {item.date}
+                      </Card>
+                  </a>
               </List.Item>
             )}
           />

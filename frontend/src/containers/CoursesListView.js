@@ -4,10 +4,10 @@ import axios from 'axios';
 
 
 class CoursesList extends React.Component{
-
-    constructor(props) {
-        super(props);
-    }
+    //
+    // constructor(props) {
+    //     super(props);
+    // }
 
     state = {
         courses: []
