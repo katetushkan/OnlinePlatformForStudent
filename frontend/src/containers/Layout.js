@@ -1,21 +1,18 @@
 import React from "react";
-import axios from 'axios';
+import { Link, withRouter  } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { Layout, Menu } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  UploadOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons';
+import * as actions from "../store/actions/auth";
+import {connect} from "react-redux";
 
 const { Header, Sider, Content, Footer } = Layout;
 
- function logOut(){
-   debugger;
-    axios.post('http://0.0.0.0:8000/auth/logout/')
-  };
 
 class CustomLayout extends React.Component {
 
@@ -33,6 +30,16 @@ class CustomLayout extends React.Component {
     });
   };
 
+   onFinish = () => {
+      if (!this.props.error){
+          debugger;
+            this.props.logout();
+          debugger;
+
+      }
+
+  };
+
 
 
   render() {
@@ -43,16 +50,20 @@ class CustomLayout extends React.Component {
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} >
             <Menu.Item key="1">
                 <UnorderedListOutlined />
-                <span>Courses</span>
+                <span ><Link style={{color: "white"}} to="/">Courses</Link></span>
             </Menu.Item>
-            <Menu.Item key="2">
-              <UserOutlined />
-              <span>Login</span>
-            </Menu.Item>
-            <Menu.Item key="3" onClick={logOut}>
-              <UploadOutlined />
-              <span>Register</span>
-            </Menu.Item>
+            {
+                this.props.isAuthenticated ?
+                    <Menu.Item key="3" onClick={this.onFinish}>
+                        <UserOutlined />
+                        <span><Link style={{color: "white"}} to="/">Logout</Link></span>
+                    </Menu.Item>
+                    :
+                      <Menu.Item key="3">
+                          <UserOutlined />
+                          <span><Link style={{color: "white"}} to="/login">Login</Link></span>
+                      </Menu.Item>
+              }
           </Menu>
         </Sider>
         <Layout className="site-layout" >
@@ -82,7 +93,18 @@ class CustomLayout extends React.Component {
   };
 };
 
-export default CustomLayout;
+
+
+const mapDispatchToProps = dispatch => {
+
+    return{
+        logout: () => dispatch(actions.logout())
+
+    }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(CustomLayout));
+
 
 
 

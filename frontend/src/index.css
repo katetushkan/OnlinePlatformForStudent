@@ -13,10 +13,12 @@ body {
   cursor: pointer;
   margin-right: 950px;
   transition: color 0.3s;
+  opacity: 10%;
 }
 
 .trigger:hover {
   color: #1890ff;
+
 }
 
 .logo {
