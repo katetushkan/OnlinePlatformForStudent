@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from 'react-redux';
 import { Card } from "antd";
 import axios from 'axios';
 
@@ -14,10 +15,16 @@ class CoursesDetail extends React.Component{
 
 
 
-    componentDidMount() {
+    componentWillReceiveProps(newProps) {
         const coursesID = this.props.match.params.coursesID;
-        debugger;
-        axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}`)
+        if (newProps.token){
+            debugger;
+            axios.defaults.headers = {
+                "Content-type": "application/json",
+                Authorization: newProps.token
+            }
+            debugger;
+            axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}/`)
             .then(res =>{
                 debugger;
                 this.setState({
@@ -26,6 +33,9 @@ class CoursesDetail extends React.Component{
                 debugger;
                 console.log(res.data);
             })
+        }
+
+
     }
 
     render() {
@@ -41,4 +51,11 @@ class CoursesDetail extends React.Component{
 
 }
 
-export default CoursesDetail;
+
+const mapStateToProps = state =>{
+    return{
+        token: state.token
+    }
+}
+
+export default connect(mapStateToProps)(CoursesDetail);

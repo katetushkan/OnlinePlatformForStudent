@@ -17,7 +17,7 @@ const Courses = (props) => {
             dataSource={props.data}
             renderItem={item => (
               <List.Item>
-                  <a href={`${item.id}`}>
+                  <a href={`/courses/${item.id}`}>
                       <Card title={item.name}>
                         {item.date}
                       </Card>
