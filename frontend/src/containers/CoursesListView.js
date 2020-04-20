@@ -2,6 +2,9 @@ import React from "react";
 import { connect } from 'react-redux';
 import Courses from "../components/Courses";
 import axios from 'axios';
+import {Menu} from "antd";
+import {UnorderedListOutlined, UserOutlined} from "@ant-design/icons";
+import {Link} from "react-router-dom";
 
 
 class CoursesList extends React.Component{
@@ -14,14 +17,8 @@ class CoursesList extends React.Component{
         courses: []
     }
 
-    componentWillReceiveProps(newProps) {
-        if (newProps.token){
-            debugger;
-            axios.defaults.headers = {
-                "Content-type": "application/json",
-                Authorization: newProps.token
-            }
-            axios.get('http://0.0.0.0:8000/api/courses/')
+    componentDidMount() {
+        axios.get('http://0.0.0.0:8000/api/courses/')
             .then(res =>{
                 debugger;
                 this.setState({
@@ -32,13 +29,14 @@ class CoursesList extends React.Component{
                 console.log(res.data);
                 debugger;
             })
-        }
-        
     }
+    
 
     render() {
         return(
+           
             <Courses data={this.state.courses}/>
+
         );
     };
 

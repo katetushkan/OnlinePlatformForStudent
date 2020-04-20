@@ -7,6 +7,8 @@ import {
   MenuFoldOutlined,
   UserOutlined,
   UnorderedListOutlined,
+  BankOutlined, 
+  WechatOutlined
 } from '@ant-design/icons';
 import * as actions from "../store/actions/auth";
 import {connect} from "react-redux";
@@ -32,13 +34,17 @@ class CustomLayout extends React.Component {
 
    onFinish = () => {
       if (!this.props.error){
-          debugger;
-            this.props.logout();
-          debugger;
+          this.props.logout();
+          const { history } = this.props;
+          history.push("/");
+
 
       }
 
   };
+
+
+
 
 
 
@@ -52,18 +58,38 @@ class CustomLayout extends React.Component {
                 <UnorderedListOutlined />
                 <span ><Link style={{color: "white"}} to="/">Courses</Link></span>
             </Menu.Item>
+             {
+                this.props.isAuthenticated ?
+                    <Menu.Item key="2">
+                        <BankOutlined />
+                        <span><Link style={{color: "white"}} to="">Classroom</Link></span>
+                    </Menu.Item>
+                    : this.props.isAuthenticated
+
+            }
             {
                 this.props.isAuthenticated ?
-                    <Menu.Item key="3" onClick={this.onFinish}>
+                    <Menu.Item key="3">
+                        <WechatOutlined />
+                        <span><Link style={{color: "white"}} to="">Chat</Link></span>
+                    </Menu.Item>
+                    : this.props.isAuthenticated
+
+            }
+            {
+                this.props.isAuthenticated ?
+                    <Menu.Item key="4" onClick={this.onFinish}>
                         <UserOutlined />
                         <span><Link style={{color: "white"}} to="/">Logout</Link></span>
                     </Menu.Item>
                     :
-                      <Menu.Item key="3">
+                      <Menu.Item key="5">
                           <UserOutlined />
                           <span><Link style={{color: "white"}} to="/login">Login</Link></span>
                       </Menu.Item>
-              }
+
+            }
+
           </Menu>
         </Sider>
         <Layout className="site-layout" >

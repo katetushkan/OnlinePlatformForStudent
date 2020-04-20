@@ -9,12 +9,16 @@ import {LockOutlined, MailOutlined, UserOutlined} from '@ant-design/icons';
 import * as actions from "../store/actions/auth";
 
 class RegistrationForm extends React.Component{
+
+
     onFinish = values => {
-     if (!this.props.error){
-         debugger;
-          this.props.onAuth(values.username, values.email, values.password, values.confirm);debugger;
-      }
-     this.props.history('/');
+     if (!this.props.error) {
+         const { history } = this.props;
+         this.props.onAuth(values.username, values.email, values.password, values.confirm);
+         history.push("/login");
+     }
+
+
   };
 
 

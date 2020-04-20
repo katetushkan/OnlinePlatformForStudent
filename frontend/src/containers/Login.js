@@ -12,12 +12,12 @@ class NormalLoginForm extends React.Component{
 
   onFinish = values => {
       if (!this.props.error){
-          debugger;
           this.props.onAuth(values.username, values.password);
-          debugger;
+          const { history } = this.props;
+          history.push("/");
 
       }
-    this.props.history.push('/');
+   
   };
   
   render() {

@@ -13,18 +13,9 @@ class CoursesDetail extends React.Component{
 
     }
 
-
-
-    componentWillReceiveProps(newProps) {
-        const coursesID = this.props.match.params.coursesID;
-        if (newProps.token){
-            debugger;
-            axios.defaults.headers = {
-                "Content-type": "application/json",
-                Authorization: newProps.token
-            }
-            debugger;
-            axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}/`)
+    componentDidMount() {
+         const coursesID = this.props.match.params.coursesID;
+        axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}/`)
             .then(res =>{
                 debugger;
                 this.setState({
@@ -33,10 +24,10 @@ class CoursesDetail extends React.Component{
                 debugger;
                 console.log(res.data);
             })
-        }
-
-
     }
+
+
+ 
 
     render() {
         return(

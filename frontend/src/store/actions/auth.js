@@ -23,6 +23,9 @@ export const authFail = error => {
 export const logout = () =>  {
     localStorage.removeItem('user');
     localStorage.removeItem('expirationDate');
+    axios.post('http://0.0.0.0:8000/auth/logout/').then(res => {
+        console.log(res.data);
+    })
     return{
         type: actionTypes.AUTH_LOGOUT
     }
@@ -67,17 +70,27 @@ export const authSignUp = (username, email, password1, password2) => {
             password1: password1,
             password2: password2
         }).then(res => {
-            debugger;
             const token = res.data.key;
-            debugger;
             const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-            debugger;
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
-            debugger;
             dispatch(authSuccess(token));
             dispatch(checkAuthTimeout(3600));
         }).catch(err => {
+            if(err.response.data.username){
+                alert(err.response.data.username);
+            }
+            if(err.response.data.email){
+                alert(err.response.data.email);
+            }
+            if(err.response.data.password1){
+                alert(err.response.data.password1);
+            }
+            if(err.response.data.password2){
+                alert(err.response.data.password2);
+            }
+            console.log(err.response.data);
+            debugger;
             dispatch(authFail(err))
         })
     }

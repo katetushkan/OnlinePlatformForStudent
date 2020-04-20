@@ -65,6 +65,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+REST_AUTH_SERIALIZERS = {
+
+    'USER_DETAILS_SERIALIZER': 'api.serializer.CustomUser',
+}
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
