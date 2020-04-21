@@ -62,7 +62,7 @@ class CustomLayout extends React.Component {
                 this.props.isAuthenticated ?
                     <Menu.Item key="2">
                         <BankOutlined />
-                        <span><Link style={{color: "white"}} to="">Classroom</Link></span>
+                        <span><Link style={{color: "white"}} to="/classroom">Classroom</Link></span>
                     </Menu.Item>
                     : this.props.isAuthenticated
 

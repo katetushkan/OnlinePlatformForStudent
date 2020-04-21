@@ -2,16 +2,9 @@ import React from "react";
 import { connect } from 'react-redux';
 import Courses from "../components/Courses";
 import axios from 'axios';
-import {Menu} from "antd";
-import {UnorderedListOutlined, UserOutlined} from "@ant-design/icons";
-import {Link} from "react-router-dom";
 
 
 class CoursesList extends React.Component{
-    //
-    // constructor(props) {
-    //     super(props);
-    // }
 
     state = {
         courses: []
@@ -34,7 +27,7 @@ class CoursesList extends React.Component{
 
     render() {
         return(
-           
+
             <Courses data={this.state.courses}/>
 
         );
