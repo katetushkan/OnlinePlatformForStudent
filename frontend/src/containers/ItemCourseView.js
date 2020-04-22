@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { Card } from "antd";
+import {Button, Card} from "antd";
 import axios from 'axios';
 
 
@@ -14,7 +14,9 @@ class CoursesDetail extends React.Component{
     }
 
     componentDidMount() {
+        debugger
          const coursesID = this.props.match.params.coursesID;
+        debugger
         axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}/`)
             .then(res =>{
                 debugger;
@@ -26,8 +28,28 @@ class CoursesDetail extends React.Component{
             })
     }
 
+    handelSubscribe = (event) =>{
+        debugger
+        const coursesID = this.props.match.params.coursesID;
+        const token = "Token " + localStorage.getItem("token")
+        event.preventDefault();
+        debugger;
+        fetch('http://0.0.0.0:8000/api/courses/subscribe/', {
+          method: 'POST',
+          headers: {
+            // 'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            "Authorization": "Token " + localStorage.getItem("token")
+          },
+          body: JSON.stringify({
+            course: coursesID,
+          })
+        }).then(res =>{
+              console.log(res);
+          })
 
- 
+
+    };
 
     render() {
         return(
@@ -36,7 +58,10 @@ class CoursesDetail extends React.Component{
                     <p>{this.state.courses.date}</p>
                     <p>{this.state.courses.description}</p>
                 </Card>
-            </div>    
+                <form>
+                    <Button type="primary" onClick={this.handelSubscribe}>Primary</Button>
+                </form>
+            </div>
         );
     };
 

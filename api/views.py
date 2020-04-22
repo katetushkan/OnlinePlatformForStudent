@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import Course, FilesToCourse
-from api.permissions import IsAnonymous
+from api.permissions import IsAnonymous, IsStudent, IsTeacher
 from api.serializer import CourseSerializer, FilesToCourseSerializer, SubscriptionToCoursesSerializer
 
 
@@ -23,6 +23,7 @@ class DetailCourse(generics.RetrieveUpdateDestroyAPIView):
 
 
 class FilesPinnedToCourse(generics.ListCreateAPIView):
+    permission_classes = [IsStudent | IsTeacher]
     serializer_class = FilesToCourseSerializer
 
     def get_queryset(self):
@@ -30,6 +31,7 @@ class FilesPinnedToCourse(generics.ListCreateAPIView):
 
 
 class SubscriptionToCourses(APIView):
+    permission_classes = [IsStudent | IsTeacher]
 
     def get(self, request):
         user = User.objects.filter(id=self.request.user.id).first()
@@ -39,16 +41,12 @@ class SubscriptionToCourses(APIView):
 
     def post(self, request):
         user = User.objects.filter(id=self.request.user.id).first()
-        course = self.request.POST['course']
+        course = self.request.data['course']
 
         user.subscribers.add(course)
 
         return Response(status=status.HTTP_200_OK)
 
-
-    # def get_queryset(self):
-    #     user = User.objects.filter(id=self.request.user.id)
-    #     return Course.subscribers.add(user)
 
 
 
