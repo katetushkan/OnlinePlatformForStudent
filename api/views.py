@@ -1,10 +1,16 @@
 # Create your views here.
+import os
+from wsgiref.util import FileWrapper
+
 from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.views.generic.base import View
 
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from CourseWork.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
 from api.models import Course, FilesToCourse
 from api.permissions import IsAnonymous, IsStudent, IsTeacher
 from api.serializer import CourseSerializer, FilesToCourseSerializer, SubscriptionToCoursesSerializer
@@ -23,7 +29,7 @@ class DetailCourse(generics.RetrieveUpdateDestroyAPIView):
 
 
 class FilesPinnedToCourse(generics.ListCreateAPIView):
-    permission_classes = [IsStudent | IsTeacher]
+    # permission_classes = [IsStudent | IsTeacher]
     serializer_class = FilesToCourseSerializer
 
     def get_queryset(self):
@@ -46,6 +52,28 @@ class SubscriptionToCourses(APIView):
         user.subscribers.add(course)
 
         return Response(status=status.HTTP_200_OK)
+
+
+class FileDownloadView(View):
+
+    def get(self, request):
+        file = FilesToCourse.objects.filter(id=self.request.GET['id']).first().filename.name
+        print(file)
+        file_name = os.path.join(MEDIA_ROOT, file)
+        print(file_name)
+        if os.path.exists(file_name):
+
+            readfile = open(file_name, 'rb')
+            response = HttpResponse(FileWrapper(readfile), content_type="application/pdf")
+            response['Content-Length'] = os.path.getsize(file_name)
+            response['Content-Disposition'] = f'attachments; filename=\'{file_name}\''
+
+            return response
+
+            # return Response({'got': True})
+        else:
+            return Response(data={'no': False})
+
 
 
 

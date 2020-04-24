@@ -13,14 +13,11 @@ class CoursesList extends React.Component{
     componentDidMount() {
         axios.get('http://0.0.0.0:8000/api/courses/')
             .then(res =>{
-                debugger;
                 this.setState({
 
                     courses: res.data
                 });
-                debugger;
                 console.log(res.data);
-                debugger;
             })
     }
     

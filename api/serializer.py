@@ -25,7 +25,7 @@ class FilesToCourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FilesToCourse
-        exclude = ('id', )
+        fields = '__all__'
 
     @staticmethod
     def get_filename_to_display(obj):

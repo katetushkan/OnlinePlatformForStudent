@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
-import {Button, Card} from "antd";
+import {Button, Card, Result} from "antd";
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -8,32 +9,27 @@ class CoursesDetail extends React.Component{
     constructor(props, context, state) {
         super(props, context);
         this.state = {
-            courses: {}
+            courses: {},
+            subscribe: false
+            
         };
 
     }
 
     componentDidMount() {
-        debugger
-         const coursesID = this.props.match.params.coursesID;
-        debugger
+        const coursesID = this.props.match.params.coursesID;
         axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}/`)
             .then(res =>{
-                debugger;
                 this.setState({
                     courses: res.data
                 });
-                debugger;
                 console.log(res.data);
             })
     }
 
     handelSubscribe = (event) =>{
-        debugger
         const coursesID = this.props.match.params.coursesID;
-        const token = "Token " + localStorage.getItem("token")
         event.preventDefault();
-        debugger;
         fetch('http://0.0.0.0:8000/api/courses/subscribe/', {
           method: 'POST',
           headers: {
@@ -45,24 +41,64 @@ class CoursesDetail extends React.Component{
             course: coursesID,
           })
         }).then(res =>{
-              console.log(res);
-          })
+              this.setState( {
+                subscribe: true
+              });
+            console.log(res)
+          });
 
 
     };
 
+    
     render() {
-        return(
-            <div>
-                <Card title={this.state.courses.name}>
-                    <p>{this.state.courses.date}</p>
-                    <p>{this.state.courses.description}</p>
-                </Card>
-                <form>
-                    <Button type="primary" onClick={this.handelSubscribe}>Primary</Button>
-                </form>
-            </div>
-        );
+
+            if (this.state.subscribe){
+                if(localStorage.getItem('token')){
+                    return(
+                      <Result
+                        status="success"
+                        title="Successfully Subscribe to the course"
+                        subTitle="Welcome to our platform!"
+                        extra={[
+                          <Button type="primary" key="console">
+                              <Link>Go to your classroom</Link>
+                          </Button>,
+                        ]}
+                      />
+                  );
+                }
+                
+                else{
+                    return(
+                        <Result
+                            status="warning"
+                            title="Please to subscribe this course first log in."
+                            extra={
+                              <Button type="primary" key="console">
+                                  <Link to="/login">Login</Link>
+                              </Button>
+                            }
+                        />
+                    );
+                }
+
+            }
+            else{
+                return(
+                  <div>
+                      <Card title={this.state.courses.name}>
+                          <p>{this.state.courses.date}</p>
+                          <p>{this.state.courses.description}</p>
+                      </Card>
+                      <form>
+                          <Button type="primary" style={{marginTop: 10}}  onClick={this.handelSubscribe}>Subscribe</Button>
+                      </form>
+                  </div>
+                );
+            }
+
+
     };
 
 }

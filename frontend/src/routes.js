@@ -4,7 +4,8 @@ import CoursesList from "./containers/CoursesListView";
 import CoursesDetail from "./containers/ItemCourseView";
 import Login from "./containers/Login";
 import SignUp from "./containers/SignUp";
-import ClassRoomView from "./containers/ClassRoomView";
+import ClassRoomList from "./containers/ClassRoomView";
+import SingleRoom from "./containers/SingleRoomView";
 
 
 const BaseRouter = () =>(
@@ -14,7 +15,8 @@ const BaseRouter = () =>(
      <Route exact path='/courses/:coursesID' component={CoursesDetail}/>
      <Route exact path='/login' component={Login}/>
      <Route exact path='/signup' component={SignUp}/>
-     <Route exact path='/classroom' component={ClassRoomView}/>
+     <Route exact path='/classroom' component={ClassRoomList}/>
+     <Route exact path='/classroom/:coursesID' component={SingleRoom}/>
     </div>
 );
 
