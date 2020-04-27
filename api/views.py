@@ -1,4 +1,5 @@
 # Create your views here.
+import datetime
 import os
 from wsgiref.util import FileWrapper
 
@@ -7,13 +8,14 @@ from django.http import HttpResponse
 from django.views.generic.base import View
 
 from rest_framework import generics, status
+from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from CourseWork.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
+from CourseWork.settings import MEDIA_ROOT
 from api.models import Course, FilesToCourse
 from api.permissions import IsAnonymous, IsStudent, IsTeacher
-from api.serializer import CourseSerializer, FilesToCourseSerializer, SubscriptionToCoursesSerializer
+from api.serializer import CourseSerializer, FilesToCourseSerializer
 
 
 class ListCourse(generics.ListCreateAPIView):
@@ -29,11 +31,18 @@ class DetailCourse(generics.RetrieveUpdateDestroyAPIView):
 
 
 class FilesPinnedToCourse(generics.ListCreateAPIView):
-    # permission_classes = [IsStudent | IsTeacher]
+    permission_classes = [IsStudent | IsTeacher]
     serializer_class = FilesToCourseSerializer
 
     def get_queryset(self):
         return FilesToCourse.objects.filter(course_id=self.kwargs.get('pk')).order_by('week')
+
+    def perform_create(self, serializer):
+        week = str(((datetime.date.today() - Course.objects.filter(id=self.kwargs.get('pk')).first().date)/7).days)
+
+        course_id = Course.objects.filter(id=self.kwargs.get('pk')).first()
+        filename = self.request.FILES['file']
+        serializer.save(week=week, filename=filename, course_id=course_id)
 
 
 class SubscriptionToCourses(APIView):
@@ -70,11 +79,11 @@ class FileDownloadView(View):
 
             return response
 
-            # return Response({'got': True})
         else:
             return Response(data={'no': False})
 
 
-
-
+class DeleteFileView(generics.DestroyAPIView):
+    queryset = FilesToCourse.objects.all()
+    serializer_class = FilesToCourseSerializer
 

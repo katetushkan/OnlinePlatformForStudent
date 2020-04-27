@@ -29,6 +29,7 @@ class FilesToCourseSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_filename_to_display(obj):
+        pass
         return obj.filename.name.split('/')[-1]
 
 

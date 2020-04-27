@@ -14,7 +14,6 @@ class CoursesList extends React.Component{
         axios.get('http://0.0.0.0:8000/api/courses/')
             .then(res =>{
                 this.setState({
-
                     courses: res.data
                 });
                 console.log(res.data);

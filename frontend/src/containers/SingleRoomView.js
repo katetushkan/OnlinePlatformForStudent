@@ -2,8 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
-import { List, message, Spin } from 'antd';
-import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
+import {List, message, Spin, Upload, Button, Divider, Space} from 'antd';
+import {UploadOutlined,
+        DeleteOutlined} from "@ant-design/icons/lib/icons";
 
 
 class SingleRoom extends React.Component{
@@ -13,22 +14,37 @@ class SingleRoom extends React.Component{
         super(props, context);
         this.state = {
             datafiles: [],
-            fileid:{}
+            username: [],
         }
+        this.group = 1;
     }
 
     componentDidMount() {
         const coursesID = this.props.match.params.coursesID;
-        axios.get(`http://0.0.0.0:8000/api/courses/storage/${coursesID}/`,{
+        axios.get(`http://0.0.0.0:8000/auth/user/`,{
             headers:{
                 "Authorization": "Token " + localStorage.getItem("token")
             }
         })
             .then(res=>{
                 this.setState({
-                    datafiles: res.data
+                    username: res.data
                 });
+                this.group = this.state.username.groups[0];
+                debugger;
+                axios.get(`http://0.0.0.0:8000/api/courses/storage/${coursesID}/`,{
+                headers:{
+                    "Authorization": "Token " + localStorage.getItem("token")
+                }
             })
+                .then(res=>{
+                    this.setState({
+                        datafiles: res.data
+                    });
+                });
+            });
+
+        
     }
     handleInfiniteOnLoad = () => {
     let { data } = this.state;
@@ -52,10 +68,9 @@ class SingleRoom extends React.Component{
     });
   };
 
-    downloadFile = (index) =>{
+    handleDownload = (index) =>{
         // console.log(item);
         // event.preventDefault();
-        debugger;
          fetch(`http://0.0.0.0:8000/api/downloads/?id=${index}`, {
           method: 'GET',
           headers: {
@@ -64,13 +79,66 @@ class SingleRoom extends React.Component{
               
           },
         }).then((res) =>{
-            debugger
             window.open(res.url,  "file.download");
-            
-            debugger
         });
 
     };
+
+    handleDelete = (index) =>{
+        // console.log(item);
+        // event.preventDefault();
+         fetch(`http://0.0.0.0:8000/api/delete/${index}`, {
+          method: 'DELETE',
+          headers: {
+            // 'Accept': 'application/json',
+            "Authorization": "Token " + localStorage.getItem("token"),
+
+          },
+        }).then((res) =>{
+            debugger;
+            console.log(res);
+            const coursesID = this.props.match.params.coursesID;
+            axios.get(`http://0.0.0.0:8000/api/courses/storage/${coursesID}/`,{
+                headers:{
+                    "Authorization": "Token " + localStorage.getItem("token")
+                }
+            })
+                .then(res=>{
+                    this.setState({
+                        datafiles: res.data
+                    });
+                });
+        });
+         
+
+    };
+     
+    props1 = {
+      action: `http://0.0.0.0:8000/api/courses/storage/${this.props.match.params.coursesID}/`,
+      method: 'POST',
+      headers: {
+         "Authorization": "Token " + localStorage.getItem("token"),
+      },
+      data: {
+          week: 2,
+          course_id:2,
+
+      },
+
+    };
+    handleUpload = () =>{
+            axios.get(`http://0.0.0.0:8000/api/courses/storage/${this.props.match.params.coursesID}/`,{
+                headers:{
+                    "Authorization": "Token " + localStorage.getItem("token")
+                }
+            })
+                .then(res=>{
+                    this.setState({
+                        datafiles: res.data
+                    });
+                });
+    };
+        
     
     render() {
         return(
@@ -91,9 +159,14 @@ class SingleRoom extends React.Component{
                               description={item.filename_to_display}
                             />
                             <div>
-                                {console.log(item.id)}
-                                <UploadOutlined onClick={()=>this.downloadFile(item.id)} value={item.id}/>
+                                <UploadOutlined onClick={()=>this.handleDownload(item.id)} value={item.id}/>
                             </div>
+                              { this.group === 4 ?
+                                <div>
+                                <DeleteOutlined onClick={()=>this.handleDelete(item.id)} value={item.id}/>
+                                </div>
+                                  : true
+                              }
                           </List.Item>
                         )}
                       >
@@ -104,6 +177,39 @@ class SingleRoom extends React.Component{
                         )}
                       </List>
                     </InfiniteScroll>
+                <Divider />
+                <Space direction='horizontal'>
+
+                { this.group === 4 ?
+                    <div>
+                     
+                        <Upload {...this.props1} name="file" onChange={(info => {
+                            if (info.file.status !== 'uploading') {
+                              console.log(info.file, info.fileList);
+                              debugger
+                            }
+                            if (info.file.status === 'done') {
+                              message.success(`${info.file.name} file uploaded successfully`);
+                    
+                            } else if (info.file.status === 'error') {
+                              message.error(`${info.file.name} file upload failed.`);
+                            }
+                        })}>
+                            <Button>
+                              <UploadOutlined /> Click to Upload
+                            </Button>
+                          </Upload>
+                    </div>
+
+                    : true
+                }
+                { this.group === 4 ?
+                    <Button onClick={this.handleUpload} >
+                        Confirm Upload
+                    </Button>
+                    : true
+                }
+                </Space>
             </div>
         );
     }

@@ -20,6 +20,8 @@ class IsStudent(permissions.BasePermission):
 
 class IsTeacher(permissions.BasePermission):
     def has_permission(self, request, view):
+        # print(request.user.groups.all().first().id)
+        # print('here')
         if request.user.groups.all().first().id == 4:
             return True
         else:
