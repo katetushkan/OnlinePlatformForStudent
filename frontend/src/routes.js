@@ -6,6 +6,8 @@ import Login from "./containers/Login";
 import SignUp from "./containers/SignUp";
 import ClassRoomList from "./containers/ClassRoomView";
 import SingleRoom from "./containers/SingleRoomView";
+import ChatList from "./containers/ChatListView";
+import ChatComponent from "./containers/ChatRoomItem";
 
 
 const BaseRouter = () =>(
@@ -17,6 +19,8 @@ const BaseRouter = () =>(
      <Route exact path='/signup' component={SignUp}/>
      <Route exact path='/classroom' component={ClassRoomList}/>
      <Route exact path='/classroom/:coursesID' component={SingleRoom}/>
+     <Route exact path='/chat' component={ChatList}/>
+     <Route exact path='/chat/:chatID' component={ChatComponent}/>
     </div>
 );
 

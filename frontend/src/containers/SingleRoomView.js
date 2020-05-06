@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
-import {List, message, Spin, Upload, Button, Divider, Space} from 'antd';
+import {List, message, Spin, Upload, Button, Divider, Space, Breadcrumb} from 'antd';
 import {UploadOutlined,
         DeleteOutlined} from "@ant-design/icons/lib/icons";
 
@@ -143,6 +143,11 @@ class SingleRoom extends React.Component{
     render() {
         return(
             <div>
+                <Breadcrumb>
+                    <Breadcrumb.Item>
+                        <a href="/classroom">My Classrooms list /</a>
+                    </Breadcrumb.Item>
+                </Breadcrumb>
                 <InfiniteScroll
                       initialLoad={false}
                       pageStart={0}

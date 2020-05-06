@@ -47,9 +47,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'channels',
 
 
     'api',
+    'chat',
 ]
 
 SITE_ID = 1
@@ -102,6 +104,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CourseWork.wsgi.application'
+
+ASGI_APPLICATION = 'CourseWork.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('0.0.0.0', 6379)],
+        },
+    },
+}
 
 
 # Database
@@ -156,6 +169,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIR = [
+    os.path.join(BASE_DIR, 'chat/static')
+]
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 

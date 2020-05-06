@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import {Button, Card, Result} from "antd";
+import {Breadcrumb, Button, Card, Result} from "antd";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -52,20 +52,29 @@ class CoursesDetail extends React.Component{
 
     
     render() {
+       
 
             if (this.state.subscribe){
                 if(localStorage.getItem('token')){
                     return(
-                      <Result
-                        status="success"
-                        title="Successfully Subscribe to the course"
-                        subTitle="Welcome to our platform!"
-                        extra={[
-                          <Button type="primary" key="console">
-                              <Link>Go to your classroom</Link>
-                          </Button>,
-                        ]}
-                      />
+                        <div>
+                            <Breadcrumb>
+                                    <Breadcrumb.Item>
+                                      <a href="/">Course list /</a>
+                                    </Breadcrumb.Item>
+                              </Breadcrumb>
+                              <Result
+                                status="success"
+                                title="Successfully Subscribe to the course"
+                                subTitle="Welcome to our platform!"
+                                extra={[
+                                  <Button type="primary" key="console">
+                                      <Link>Go to your classroom</Link>
+                                  </Button>,
+                                ]}
+                              />
+                        </div>
+                         
                   );
                 }
                 
