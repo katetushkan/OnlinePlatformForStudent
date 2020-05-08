@@ -25,7 +25,7 @@ class ChatConsumer(WebsocketConsumer):
                 self.room_group_name,
                 {
                     'type': 'chat_message',
-                    'message': [message.message,message.user.username]
+                    'message': [message.message, message.user.username]
 
                 }
             )
@@ -43,7 +43,8 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        user = self.scope.get('user').id
+        username = text_data_json['username']
+        user = User.objects.filter(username=username).first().id
         room_id = int(self.room_name)
 
         Message.objects.create(user_id=user, message=message, room_id=room_id)
@@ -53,7 +54,7 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': [message, username]
             }
         )
 

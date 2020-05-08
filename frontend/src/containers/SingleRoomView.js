@@ -124,6 +124,7 @@ class SingleRoom extends React.Component{
           course_id:2,
 
       },
+      showUploadList: false
 
     };
     handleUpload = () =>{
@@ -188,7 +189,7 @@ class SingleRoom extends React.Component{
                 { this.group === 4 ?
                     <div>
                      
-                        <Upload {...this.props1} name="file" onChange={(info => {
+                        <Upload {...this.props1} name="file"  onChange={(info => {
                             if (info.file.status !== 'uploading') {
                               console.log(info.file, info.fileList);
                               debugger

@@ -1,7 +1,10 @@
 .App {
   text-align: center;
+
 }
 .Link {
   color: white;
 }
-
+.Layout {
+  height: 100vh;
+}

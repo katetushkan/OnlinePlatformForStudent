@@ -110,7 +110,8 @@ class CustomLayout extends React.Component {
             {this.props.children}
           </Content>
             <Footer style={{textAlign: "center"}}>
-                @2020 Created by <a href="https://github.com/katetushkan" >Katarina Tushkan</a>
+                <p>@2020 Created by <a href="https://github.com/katetushkan" >Katarina Tushkan</a></p>
+                Write <a href="https://vk.com/levelup_bsuir" >us</a> to get some help!
           </Footer>
         </Layout>
 

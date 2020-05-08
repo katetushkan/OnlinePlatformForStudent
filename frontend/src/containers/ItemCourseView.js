@@ -10,20 +10,34 @@ class CoursesDetail extends React.Component{
         super(props, context);
         this.state = {
             courses: {},
-            subscribe: false
-            
+            subscribe: false,
+            username: [],
         };
+        this.group = 1;
 
     }
 
     componentDidMount() {
-        const coursesID = this.props.match.params.coursesID;
-        axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}/`)
-            .then(res =>{
+
+        axios.get(`http://0.0.0.0:8000/auth/user/`,{
+            headers:{
+                "Authorization": "Token " + localStorage.getItem("token")
+            }
+        })
+            .then(res=>{
                 this.setState({
-                    courses: res.data
+                    username: res.data
                 });
-                console.log(res.data);
+                this.group = this.state.username.groups[0];
+                debugger;
+                const coursesID = this.props.match.params.coursesID;
+                axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}/`)
+                    .then(res =>{
+                        this.setState({
+                            courses: res.data
+                        });
+                        console.log(res.data);
+                    });
             })
     }
 
@@ -69,7 +83,7 @@ class CoursesDetail extends React.Component{
                                 subTitle="Welcome to our platform!"
                                 extra={[
                                   <Button type="primary" key="console">
-                                      <Link>Go to your classroom</Link>
+                                      <Link to='/classroom'>Go to your classroom</Link>
                                   </Button>,
                                 ]}
                               />
@@ -80,15 +94,22 @@ class CoursesDetail extends React.Component{
                 
                 else{
                     return(
-                        <Result
-                            status="warning"
-                            title="Please to subscribe this course first log in."
-                            extra={
-                              <Button type="primary" key="console">
-                                  <Link to="/login">Login</Link>
-                              </Button>
-                            }
-                        />
+                        <div>
+                            <Breadcrumb>
+                                <Breadcrumb.Item>
+                                  <a href="/">Course list / </a>
+                                </Breadcrumb.Item>
+                          </Breadcrumb>
+                            <Result
+                                status="warning"
+                                title="Please to subscribe this course first log in."
+                                extra={
+                                  <Button type="primary" key="console">
+                                      <Link to="/login">Login</Link>
+                                  </Button>
+                                }
+                            />
+                        </div>
                     );
                 }
 
@@ -96,13 +117,28 @@ class CoursesDetail extends React.Component{
             else{
                 return(
                   <div>
+                      <Breadcrumb>
+                            <Breadcrumb.Item>
+                              <a href="/">Course List / </a>
+                            </Breadcrumb.Item>
+                      </Breadcrumb>
+                      <p> </p>
                       <Card title={this.state.courses.name}>
                           <p>{this.state.courses.date}</p>
                           <p>{this.state.courses.description}</p>
                       </Card>
-                      <form>
-                          <Button type="primary" style={{marginTop: 10}}  onClick={this.handelSubscribe}>Subscribe</Button>
-                      </form>
+                      {this.group === 3 ?
+                          <form>
+                              <Button type="primary" style={{marginTop: 10}}  onClick={this.handelSubscribe}>Subscribe</Button>
+                           </form>
+                          : true
+                      }
+                      {this.group === 1 ?
+                          <form>
+                              <Button type="primary" style={{marginTop: 10}}  onClick={this.handelSubscribe}>Subscribe</Button>
+                           </form>
+                          : true
+                      }
                   </div>
                 );
             }

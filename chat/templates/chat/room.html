@@ -22,6 +22,7 @@
         );
 
         chatSocket.onmessage = function(e) {
+            debugger
             const data = JSON.parse(e.data);
             document.querySelector('#chat-log').value += (data.message + '\n');
         };
@@ -38,10 +39,12 @@
         };
 
         document.querySelector('#chat-message-submit').onclick = function(e) {
+            debugger
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'username': 'LizaShved'
             }));
             messageInputDom.value = '';
         };

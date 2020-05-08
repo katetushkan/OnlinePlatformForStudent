@@ -1,5 +1,6 @@
 import React from "react";
 import {List, Card } from 'antd';
+import {CheckCircleTwoTone, LoadingOutlined} from "@ant-design/icons/lib/icons";
 
 
 
@@ -20,7 +21,21 @@ const ChatListItem = (props) => {
               <List.Item>
                   <a href={`/chat/${item.id}`}>
                       <Card title={item.name}>
-                        {item.date}
+
+                        <p>{item.date} - <br />
+                            {item.endDate}
+                        </p>
+                          <p>
+                              {Date.parse(item.date) > Date.now().toString() ?
+                                 <div>
+                                     <LoadingOutlined style={{ color: '#eb4034' }}/> We still have some places!!!
+
+                                 </div>
+
+                                  : <div><CheckCircleTwoTone twoToneColor="#52c41a" /> This course already begins!</div>
+                          }
+                          </p>
+
                       </Card>
                   </a>
               </List.Item>

@@ -1,8 +1,9 @@
 import React from "react";
-import {List, Card } from 'antd';
-
+import {List, Card, } from 'antd';
+import {LoadingOutlined, CheckCircleTwoTone} from "@ant-design/icons/lib/icons";
 
 const Courses = (props) => {
+
     return(
         <List
             grid={{
@@ -18,8 +19,23 @@ const Courses = (props) => {
             renderItem={item => (
               <List.Item>
                   <a href={`/courses/${item.id}`}>
+
                       <Card title={item.name}>
-                        {item.date}
+
+                        <p>{item.date} - <br />
+                            {item.endDate}
+                        </p>
+                          <p>
+                              {Date.parse(item.date) > Date.now().toString() ?
+                                 <div>
+                                     <LoadingOutlined style={{ color: '#eb4034' }}/> We still have some places!!!
+
+                                 </div>
+
+                                  : <div><CheckCircleTwoTone twoToneColor="#52c41a" /> This course already begins!</div>
+                          }
+                          </p>
+
                       </Card>
                   </a>
               </List.Item>
