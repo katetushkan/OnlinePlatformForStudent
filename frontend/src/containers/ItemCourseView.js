@@ -18,27 +18,27 @@ class CoursesDetail extends React.Component{
     }
 
     componentDidMount() {
-
-        axios.get(`http://0.0.0.0:8000/auth/user/`,{
-            headers:{
-                "Authorization": "Token " + localStorage.getItem("token")
-            }
-        })
-            .then(res=>{
-                this.setState({
-                    username: res.data
-                });
-                this.group = this.state.username.groups[0];
-                debugger;
-                const coursesID = this.props.match.params.coursesID;
+        
+        const coursesID = this.props.match.params.coursesID;
                 axios.get(`http://0.0.0.0:8000/api/courses/${coursesID}/`)
                     .then(res =>{
                         this.setState({
                             courses: res.data
                         });
                         console.log(res.data);
+                        axios.get(`http://0.0.0.0:8000/auth/user/`,{
+                            headers:{
+                                "Authorization": "Token " + localStorage.getItem("token")
+                            }
+                        })
+                            .then(res=>{
+                                this.setState({
+                                    username: res.data
+                                });
+                                this.group = this.state.username.groups[0];
+                                debugger;
+                            })
                     });
-            })
     }
 
     handelSubscribe = (event) =>{
@@ -124,16 +124,16 @@ class CoursesDetail extends React.Component{
                       </Breadcrumb>
                       <p> </p>
                       <Card title={this.state.courses.name}>
-                          <p>{this.state.courses.date}</p>
+                          <p>{this.state.courses.date} - {this.state.courses.endDate}</p>
                           <p>{this.state.courses.description}</p>
                       </Card>
-                      {this.group === 3 ?
+                      {this.group === 3 & Date.parse(this.state.courses.date) < Date.now().toString() ?
                           <form>
                               <Button type="primary" style={{marginTop: 10}}  onClick={this.handelSubscribe}>Subscribe</Button>
                            </form>
                           : true
                       }
-                      {this.group === 1 ?
+                      {this.group === 1 & Date.parse(this.state.courses.date) < Date.now().toString() ?
                           <form>
                               <Button type="primary" style={{marginTop: 10}}  onClick={this.handelSubscribe}>Subscribe</Button>
                            </form>

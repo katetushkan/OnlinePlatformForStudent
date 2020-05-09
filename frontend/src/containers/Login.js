@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { Form, Input, Button,Spin } from 'antd';
+import {Form, Input, Button, Spin } from 'antd';
 import { UserOutlined, LockOutlined, LoadingOutlined } from '@ant-design/icons';
 import * as actions from '../store/actions/auth'
+
 
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -10,22 +11,24 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 class NormalLoginForm extends React.Component{
 
-  onFinish = values => {
-      if (!this.props.error){
-          this.props.onAuth(values.username, values.password);
-          const { history } = this.props;
-          history.push("/");
 
-      }
-   
-  };
+    constructor(props, context, onFinish) {
+        super(props, context);
+        this.success = 0;
+    }
+
+    onFinish = values => {
+        this.props.onAuth(values.username, values.password);
+        
+    };
   
   render() {
       let errorMessage = null;
       if (this.props.error){
           errorMessage = (
-              <p>{this.props.error.message}</p>
+              <p>Please, check your username and password</p>
           )
+         
       }
       return (
           <div>

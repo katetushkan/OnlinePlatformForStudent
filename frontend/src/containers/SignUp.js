@@ -12,11 +12,8 @@ class RegistrationForm extends React.Component{
 
 
     onFinish = values => {
-     if (!this.props.error) {
-         const { history } = this.props;
-         this.props.onAuth(values.username, values.email, values.password, values.confirm);
-         history.push("/login");
-     }
+     this.props.onAuth(values.username, values.email, values.password, values.confirm);
+
 
 
   };

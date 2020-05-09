@@ -28,7 +28,7 @@ const ChatListItem = (props) => {
                           <p>
                               {Date.parse(item.date) > Date.now().toString() ?
                                  <div>
-                                     <LoadingOutlined style={{ color: '#eb4034' }}/> We still have some places!!!
+                                     <LoadingOutlined style={{ color: '#eb4034' }}/> We still have some place!!!
 
                                  </div>
 

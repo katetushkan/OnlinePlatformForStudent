@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Comment, Avatar, Form, Button, List, Input, Breadcrumb} from 'antd';
+import {Comment, Form, Button, List, Input, Breadcrumb} from 'antd';
 import moment from 'moment';
 import axios from "axios";
 
@@ -14,8 +14,6 @@ const CommentList = ({ comments }) => (
     renderItem={props => <Comment {...props} />}
   />
 );
-
-
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <div>
@@ -73,7 +71,6 @@ class ChatRoom extends React.Component{
                         comments: [
                           {
                             author: `${date.message[1]}`,
-                            avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                             content: <p>{date.message[0]}</p>,
                             datetime: moment().fromNow(),
                           },
@@ -122,12 +119,6 @@ class ChatRoom extends React.Component{
                     </Breadcrumb.Item>
               </Breadcrumb>
                 <Comment
-                  avatar={
-                    <Avatar
-                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                      alt="Han Solo"
-                    />
-                  }
                   content={
                     <Editor
                       onChange={this.handleChange}

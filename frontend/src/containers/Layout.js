@@ -8,25 +8,56 @@ import {
   UserOutlined,
   UnorderedListOutlined,
   BankOutlined, 
-  WechatOutlined
+  WechatOutlined,
+    SmileOutlined
 } from '@ant-design/icons';
 import * as actions from "../store/actions/auth";
 import {connect} from "react-redux";
+import axios from "axios";
 
 const { Header, Sider, Content, Footer } = Layout;
 
 
 class CustomLayout extends React.Component {
-
-  // constructor(props) {
-  //   super(props);
   //
+  // constructor(props) {
+  //   super(props)
   // }
   state = {
     collapsed: false,
-  };
+      username: [],
+      role: ''
+      };
 
-  toggle = () => {
+  componentDidMount() {
+      if(localStorage.getItem('token')){
+          debugger
+        axios.get(`http://0.0.0.0:8000/auth/user/`,{
+            headers:{
+                "Authorization": "Token " + localStorage.getItem("token")
+            }
+        })
+            .then(res=>{
+                this.setState({
+                    username: res.data
+                })
+               console.log(res.data);
+                if(this.state.username.groups[0]===3){
+                    this.setState({
+                        role: 'Student'
+                    })
+                }
+                if(this.state.username.groups[0]===4){
+                    this.setState({
+                        role: 'Teacher'
+                    })
+                }
+            });
+
+      }
+  }
+
+    toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     });
@@ -44,16 +75,39 @@ class CustomLayout extends React.Component {
   };
 
 
-
-
-
-
   render() {
+    let username = '';
+    if (localStorage.getItem('token')){
+
+
+
+    }
     return (
       <Layout>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-          <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} >
+
+          <Menu theme="dark" mode="inline"  >
+              {
+                  this.props.isAuthenticated ?
+                        <Menu.Item key="6">
+                            <SmileOutlined />
+                            <span ><Link style={{color: "white"}}>Hello, {this.state.username.username}</Link></span>
+                        </Menu.Item>
+                      : <div >
+                          <p style={{color: 'white'}} style={{margin: 30}} ></p>
+                        </div>
+              }
+              {
+                  this.props.isAuthenticated ?
+                        <Menu.Item key="7">
+                            <SmileOutlined rotate={180} />
+                            <span ><Link style={{color: "white"}}>{this.state.role}</Link></span>
+                        </Menu.Item>
+                      : <div >
+                          <p style={{color: 'white'}} style={{margin: 30}} ></p>
+                        </div>
+              }
+
             <Menu.Item key="1">
                 <UnorderedListOutlined />
                 <span ><Link style={{color: "white"}} to="/">Courses</Link></span>
@@ -107,6 +161,8 @@ class CustomLayout extends React.Component {
               minHeight: 280,
             }}
           >
+
+              {console.log(username)}
             {this.props.children}
           </Content>
             <Footer style={{textAlign: "center"}}>

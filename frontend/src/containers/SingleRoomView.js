@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
 import {List, message, Spin, Upload, Button, Divider, Space, Breadcrumb} from 'antd';
-import {UploadOutlined,
-        DeleteOutlined} from "@ant-design/icons/lib/icons";
+import {DownloadOutlined,
+        DeleteOutlined,
+        UploadOutlined} from "@ant-design/icons/lib/icons";
 
 
 class SingleRoom extends React.Component{
@@ -165,7 +166,7 @@ class SingleRoom extends React.Component{
                               description={item.filename_to_display}
                             />
                             <div>
-                                <UploadOutlined onClick={()=>this.handleDownload(item.id)} value={item.id}/>
+                                <DownloadOutlined onClick={()=>this.handleDownload(item.id)} value={item.id}/>
                             </div>
                               { this.group === 4 ?
                                 <div>

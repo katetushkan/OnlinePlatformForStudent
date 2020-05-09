@@ -54,6 +54,7 @@ export const authLogin = (username, password) => {
             localStorage.setItem('expirationDate', expirationDate);
             dispatch(authSuccess(token));
             dispatch(checkAuthTimeout(3600));
+            window.location.href = '/'
         }).catch(err => {
             dispatch(authFail(err))
         })
@@ -76,6 +77,7 @@ export const authSignUp = (username, email, password1, password2) => {
             localStorage.setItem('expirationDate', expirationDate);
             dispatch(authSuccess(token));
             dispatch(checkAuthTimeout(3600));
+            window.location.href = '/'
         }).catch(err => {
             if(err.response.data.username){
                 alert(err.response.data.username);
