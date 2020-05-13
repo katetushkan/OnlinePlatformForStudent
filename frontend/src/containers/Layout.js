@@ -83,7 +83,7 @@ class CustomLayout extends React.Component {
 
     }
     return (
-      <Layout>
+      <Layout className={'Layout'}>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
 
           <Menu theme="dark" mode="inline"  >

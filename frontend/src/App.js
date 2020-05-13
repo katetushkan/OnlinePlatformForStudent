@@ -17,13 +17,11 @@ class App extends Component{
 
   render(){
       return (
-    <div>
        <Router>
           <CustomLayout {...this.props}>
             <BaseRouter/>
           </CustomLayout>
        </Router>
-    </div>
   );
   }
 }
